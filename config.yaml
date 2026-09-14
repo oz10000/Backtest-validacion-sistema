@@ -1,0 +1,112 @@
+# config.yaml
+# Configuración del DAPS Certification Lab
+
+project:
+  name: "DAPS-Omega-Certification-Lab"
+  version: "1.0.0"
+
+data:
+  exchange: "okx"
+  fallback_exchanges: ["kraken", "mexc", "kucoin"]
+  symbols:
+    - BTC/USDT
+    - ETH/USDT
+    - SOL/USDT
+    - XRP/USDT
+    - ADA/USDT
+    - BNB/USDT
+    - DOT/USDT
+    - LINK/USDT
+    - AVAX/USDT
+    - UNI/USDT
+    - ATOM/USDT
+    - LTC/USDT
+    - ETC/USDT
+    - NEAR/USDT
+    - APT/USDT
+    - ARB/USDT
+    - OP/USDT
+    - INJ/USDT
+    - SUI/USDT
+    - APE/USDT
+    - DOGE/USDT
+    - PEPE/USDT
+    - WIF/USDT
+    - XAU/USDT
+    - XAG/USDT
+    - WTI/USDT
+    - SPX/USDT
+    - NDX/USDT
+    - DJI/USDT
+    - DAX/USDT
+    - NIKKEI/USDT
+    - EUR/USDT
+    - GBP/USDT
+    - JPY/USDT
+    - AUD/USDT
+    - CAD/USDT
+    - CHF/USDT
+    - NZD/USDT
+    - MXN/USDT
+    - BRL/USDT
+  timeframes:
+    entry: "5m"
+    confirm: "15m"
+    trend: "1h"
+  lookback_days: 180
+  cache_dir: "./data/datasets"
+
+backtest:
+  initial_capital: 10000.0
+  fee_per_side: 0.001       # 0.10%
+  slippage: 0.0005          # 0.05%
+  spread: 0.0002            # 0.02%
+  latency_bars: 1           # entrada en vela siguiente
+  max_concurrent: 5
+  risk_per_trade: 0.01      # 1%
+  max_daily_drawdown: 0.03
+
+signal_engine:
+  # Ruta al repositorio DAPS original (importable)
+  daps_repo_path: "../daps_omega"
+  min_omega_score: 40.0
+  omega_tier_threshold: 90.0
+  stier_threshold: 80.0
+
+optimization:
+  grid_search:
+    sl_atr_mult: [0.2, 0.3, 0.4, 0.5, 0.6]
+    tp_atr_mult: [1.0, 1.4, 1.8, 2.2, 2.5]
+    trailing_pct: [0.002, 0.003, 0.005, 0.007]
+    leverage: [1, 3, 5, 7, 10]
+  bayesian:
+    n_iterations: 100
+    init_points: 20
+  walk_forward:
+    train_days: 60
+    validation_days: 20
+    test_days: 20
+    n_windows: 6
+
+validation:
+  monte_carlo:
+    n_iterations: 10000
+    method: "trade_shuffle"   # trade_shuffle | bootstrap | slippage_var
+  bootstrap:
+    n_samples: 10000
+    confidence_levels: [0.90, 0.95, 0.99]
+
+certification:
+  min_trades: 30
+  min_profit_factor: 1.2
+  min_sharpe: 1.0
+  max_drawdown: 0.25
+  min_walk_forward_positive: 0.60
+  min_monte_carlo_prob_positive: 0.60
+
+reports:
+  output_dir: "./reports/output"
+  formats: ["html", "json"]
+  include_equity_curve: true
+  include_trade_ledger: true
+  include_monthly_returns: true
