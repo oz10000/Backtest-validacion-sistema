@@ -1,0 +1,31 @@
+name: DAPS — Backtest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 1'  # Lunes 3am UTC
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install deps
+        run: pip install -r requirements.txt
+      - name: Run backtest
+        run: python main.py --phase backtest
+        env:
+          TZ: America/Argentina/Buenos_Aires
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: backtest-results
+          path: |
+            reports/output/
+            data/datasets/
+          retention-days: 30
