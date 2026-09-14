@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+venv/
+env/
+.env
+data/datasets/
+reports/output/
+*.parquet
+.DS_Store
+.idea/
+.vscode/
